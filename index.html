@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ultah Sengku Tercinta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Pattaya&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; margin: 0; padding: 0; }
+        .font-aesthetic { font-family: 'Pattaya', sans-serif; }
+
+        /* Animasi Masuk */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 1s ease; }
+        .reveal.show { opacity: 1; transform: translateY(0); }
+
+        /* Overlay Transisi */
+        #transition-overlay {
+            position: fixed; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(45deg, #f43f5e, #d946ef);
+            z-index: 999; transition: all 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+    </style>
+</head>
+<body class="overflow-x-hidden min-h-screen flex items-center justify-center">
+
+    <div id="transition-overlay"></div>
+
+    <div id="countdown-section" class="flex flex-col items-center justify-center text-center p-6 z-10 transition-all duration-500">
+        <p class="text-pink-500 font-bold tracking-[0.3em] text-[10px] mb-6 uppercase">Menghitung Detik Spesial</p>
+        <div class="flex gap-4 text-white">
+            <div class="flex flex-col"><span id="days" class="text-4xl font-extrabold">00</span><span class="text-[10px] opacity-50">HARI</span></div>
+            <div class="flex flex-col"><span id="hours" class="text-4xl font-extrabold">00</span><span class="text-[10px] opacity-50">JAM</span></div>
+            <div class="flex flex-col"><span id="minutes" class="text-4xl font-extrabold">00</span><span class="text-[10px] opacity-50">MENIT</span></div>
+            <div class="flex flex-col"><span id="seconds" class="text-4xl font-extrabold text-pink-500">00</span><span class="text-[10px] text-pink-500">DETIK</span></div>
+        </div>
+    </div>
+
+    <div id="main-content" class="hidden opacity-0 flex-col items-center w-full min-h-screen bg-pink-50 py-10 px-6 z-20">
+        
+        <div class="reveal relative w-44 h-44 mb-8">
+            <div class="absolute inset-0 bg-pink-400 rounded-[2rem] rotate-6 opacity-20 animate-pulse"></div>
+            <img src="/Users/macbookprom12020/Code/birthday/dia.jpeg" 
+                 class="relative w-full h-full object-cover rounded-[2rem] shadow-2xl border-4 border-white animate-float" alt="Foto">
+        </div>
+
+        <div class="reveal text-center max-w-sm mb-10">
+            <h1 class="font-aesthetic text-5xl text-pink-600 mb-4 leading-tight">Happy Birthday Seng</h1>
+            <p class="text-slate-600 leading-relaxed italic">
+                "Semoga setiap langkahmu kedepan selalu dipenuhi cahaya, tawa, dan kebahagiaan yang tak terbatas."
+            </p>
+        </div>
+
+        <div class="reveal grid grid-cols-2 gap-3 w-full max-w-xs mb-10">
+            <div class="h-32 bg-gray-200 rounded-2xl overflow-hidden shadow-md">
+                <img src="/Users/macbookprom12020/Code/birthday/diaa.jpeg" class="w-full h-full object-cover">
+            </div>
+            <div class="h-32 bg-gray-200 rounded-2xl overflow-hidden shadow-md mt-4">
+                <img src="/Users/macbookprom12020/Code/birthday/diaaa.jpeg" class="w-full h-full object-cover">
+            </div>
+        </div>
+
+        <!-- <div class="reveal w-full flex justify-center">
+            <button onclick="activateExperience()" class="bg-pink-500 text-white font-bold py-4 px-8 rounded-2xl shadow-lg shadow-pink-200 active:scale-95 transition-all">
+                KLIK UNTUK MUSIK 🎵
+            </button>
+        </div> -->
+
+        <div id="music-box"></div>
+    </div>
+
+    <script>
+        // --- ATUR WAKTU DISINI ---
+        // Ganti dengan waktu yang sudah lewat untuk mencoba efeknya langsung
+        const targetDate = new Date("2026-01-06T23:59:59").getTime();
+
+        const x = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                clearInterval(x);
+                startTransition();
+                return;
+            }
+
+            document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
+        }, 1000);
+
+        function startTransition() {
+            const overlay = document.getElementById('transition-overlay');
+            const countdown = document.getElementById('countdown-section');
+            const main = document.getElementById('main-content');
+
+            // 1. Tarik tirai ke tengah
+            overlay.style.left = '0';
+
+            setTimeout(() => {
+                // 2. Sembunyikan countdown, tampilkan kontainer utama
+                countdown.style.display = 'none';
+                main.classList.remove('hidden');
+                main.classList.add('flex');
+                document.body.style.backgroundColor = "#fff5f7";
+                
+                // 3. Dorong tirai keluar
+                overlay.style.left = '100%';
+
+                setTimeout(() => {
+                    // 4. Munculkan isi konten satu per satu
+                    main.style.opacity = '1';
+                    const reveals = document.querySelectorAll('.reveal');
+                    reveals.forEach((el, index) => {
+                        setTimeout(() => {
+                            el.classList.add('show');
+                        }, index * 300);
+                    });
+                    startConfetti();
+                }, 400);
+            }, 800);
+        }
+
+        function startConfetti() {
+            setInterval(() => {
+                confetti({
+                    particleCount: 40,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0, y: 0.8 }
+                });
+                confetti({
+                    particleCount: 40,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1, y: 0.8 }
+                });
+            }, 3000);
+        }
+
+        function activateExperience() {
+            document.getElementById('music-box').innerHTML = `
+                <iframe src="https://www.youtube.com/embed/S_v_E04mU1o?autoplay=1" class="hidden" allow="autoplay"></iframe>
+            `;
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        }
+    </script>
+</body>
+</html>
